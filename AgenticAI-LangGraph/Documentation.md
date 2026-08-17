@@ -67,4 +67,11 @@
 - c) Parallelization -> Task break down into subtask -> merge result in Aggregator. Ex. You tube content moderation platform -> same video multiple angle check (community LLM1 guideline, misinformation LLM2, sexual content LLM3)
 - d) Orchestrator Workers: similar to parallel but Task-> parallel subtask (nature of subtask not known dynamically LLM behaviour) ex. Research query -> LLM Call1 (google scholar) LLM Call2 (resarch)
 Query Comes -> Orchastrator now decide to send to whom to, input query task nature dont know
-- e) Evaluator Optimizer: Task-> cant execute perfectly in single go, 
+- e) Evaluator Optimizer: Task-> cant execute perfectly in single go, its like iteration in steps Rejected+Feedback like creative iteration Generator and Evaluator LLM : solution plus feedback loop imporvement -> final accept or reject with feedback
+
+2) Graph, Nodes and Edges
+- All high goals -> actionable steps (generate topic -> collect essaay -> evaluate -> aggregate -> conditional -> feebdack ) -> Represent in Graph form, all conditions, human in the loop, etc
+
+3) State: All data points needed in complete workflow, help in gudining the LLM (score, topic, feeback, etc) OBJECT {store all for graph}, accessibke to all the nodes in graph, mutable change allowed
+
+4) Reducers: State 
