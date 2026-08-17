@@ -62,3 +62,9 @@
 
 1) LLM Workflows
 - step by step process, each step is distinct task (prompting, reasoning, tool calling, memory access, decision making) - can be linear, branched, looped : retries, multi agents communication
+- a) Prompt chaining - Gate (Checks) , Out, Exit
+- b) Routing - LLM Call Router decision maker -> (who will execute LLM Call1, LLM Call2, etc.) QUERY Based decide router
+- c) Parallelization -> Task break down into subtask -> merge result in Aggregator. Ex. You tube content moderation platform -> same video multiple angle check (community LLM1 guideline, misinformation LLM2, sexual content LLM3)
+- d) Orchestrator Workers: similar to parallel but Task-> parallel subtask (nature of subtask not known dynamically LLM behaviour) ex. Research query -> LLM Call1 (google scholar) LLM Call2 (resarch)
+Query Comes -> Orchastrator now decide to send to whom to, input query task nature dont know
+- e) Evaluator Optimizer: Task-> cant execute perfectly in single go, 
