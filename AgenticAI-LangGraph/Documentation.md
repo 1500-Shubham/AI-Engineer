@@ -88,4 +88,16 @@ e)  Messagae PAssing and Node Activation
 f) Halting Condition : No more nodes and condition fulfilled
 
 ## LangGraph Workflows: Lec 6:9
-### Sequential Workflows:
+### Sequential Workflows: VERY EASY
+- Workflow -> add nodes (fucntion / llm call), edges, Functions takes State(Exact Dictionary) as input and output see code in series
+- Prompt Chaining -> START -> generate Outline of topic -> Generate Blog -> END
+
+### Parallel Workflows: 
+- Simple Parallel workflow - here when 3 parallel function return same State (taking same state input) -> kind of conflict completeSTATE returned by all three nodes -> Langgraph think all state changed: CONFLICT
+    - Input and output excpect Dictionary only -> staet management happened inside function only: update wagera -> only return dictionary ho same state nahi ya same key conflict
+- Parallezation Workflow -> LLM Based : REDUCERS
+    - UPSC essay -> a) COT- clarity of thought b)DOA c) Language all abc has a score so need a State with 3 fieds
+    - Use Reducer Function -> individual_score field [a b c] need to do merging here: by default field replace/update: need reducer function
+    - Model with structured output will use based on schema defined - Langchain BaseModel  BaseModel -> Field Description which LLM understands
+    - Now continuing with State of Langgraph concept easy mixing
+    - state: individual_score: list[int] -add Reducer here : Annotate[list[int],operator.add] -> [5] + [6] + [7] -> operator is doing addition and telling to add
