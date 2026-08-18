@@ -74,4 +74,18 @@ Query Comes -> Orchastrator now decide to send to whom to, input query task natu
 
 3) State: All data points needed in complete workflow, help in gudining the LLM (score, topic, feeback, etc) OBJECT {store all for graph}, accessibke to all the nodes in graph, mutable change allowed
 
-4) Reducers: State 
+4) Reducers: State are accessible to all nodes and mutable, Reducers tells how nodes upadte the state (upadte,merge,add) -> each key in state has its own reducers
+    - Lets say workflow (a,b) -> sum -> square
+    - State {firstNo, secondNo, result} 5,6 -> 11 -> 121 
+    - Problem: update result field can be problem, like in chatbot field message: it keeps on updating, but we want to keep all messages for Chatbot
+
+5) Execution Model of LangGraph: Inspired by Google Prygel- system large scale graph processing
+a) Graph Definiton - workflow behalf - node edges and state
+b) Compilation -> .compile on the StateGraph - check graph structure- orphan nodes etc
+c) Invocation -> .invoke(inital_state) to first node
+d) Super-Steps Begin : Execution proceeds in rounds: Parallel steps invocation 
+e)  Messagae PAssing and Node Activation
+f) Halting Condition : No more nodes and condition fulfilled
+
+## LangGraph Workflows: Lec 6:9
+### Sequential Workflows:
