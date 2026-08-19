@@ -112,4 +112,6 @@ f) Halting Condition : No more nodes and condition fulfilled
     - do like graph.add_conditional_edge("nodeName",router function which return the node name) -> so edge converted based on condition
 - LLM Based: Review Handling Workflow : Customer review reply sentiment positive or negative then reply write
     - Postiive negativfe -> strucutred output use BaseModel & Field -> Langchain type
-    - Reply -> LLM help prompt
+    - Reply -> LLM help prompt : lets say Diagnosis also want in strcutred {dict form output} then define in BaseModel
+
+### Iterative Workflows:
