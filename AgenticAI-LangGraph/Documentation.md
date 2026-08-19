@@ -113,5 +113,28 @@ f) Halting Condition : No more nodes and condition fulfilled
 - LLM Based: Review Handling Workflow : Customer review reply sentiment positive or negative then reply write
     - Postiive negativfe -> strucutred output use BaseModel & Field -> Langchain type
     - Reply -> LLM help prompt : lets say Diagnosis also want in strcutred {dict form output} then define in BaseModel
+- Another way to route to a node like End and another node based on condtion function lets say condition function returned {a,b} json then while adding condition edge {node, fucntion , {a->END, b->Antoher node}} : just syntax type
 
 ### Iterative Workflows:
+- a -> needs improvement -> c and then want to go back to c(optimize stage) -> a(evaluate)
+- can have iteration , max iteration count here or end, storing history in state using operator
+- also while prompting can use, System and user messages -> langchain
+
+
+## Basic Chatbot using LangGraph: Lec 10
+- start -> chat_node -> end (state needed: messages [operator added -> BASEMESSAGE -> (langgraph add_message use) user and llm]) -> Can use BASEMESSAGE, HUMANMESSAGE, AIMESSAGE, SYSTEMMESSAGE types of messages storing : Base Message is parent of everything
+- intial_state: messages: [HumanMessage(content='')] aise karke bhejoge and reponse = llm.invoke store again in messages AIMESSAGE (contnet= ) sotred automatically
+- while True: lagake call llm graph invoke -> user input contains 'Exit' type check: Problem is inside WHILE loop we are invoking Graph (start -> end) previous invocation deleted the new state
+- Problem: loop -> invoke call -> state reseted -> flaw
+    - Solution: Persistence in Langgraph -> workflow trigger using invoke (state persisted in memory) -> Local RAM -> MemorySaver Checkpointer Memory
+    - checkpointer = Memory Saver() -> graph.compile (checkpointer give the db storing), Also while invoking chatbot -> pas some config={if same then use same db context saved} like key - values getting stored
+    - if we do chatbot.getState(same Config) -> return all vlaues stored in persistence memory config={some vlaue aacting as key}
+
+## Persistence in LangGraph | Time Travel
+- store and restore state of workflow -> since all nodes in graph share same state
+- state: {final_value, intermediate value} -> db store -> fault tolerance help if any node crash we know the state values
+#### Checkpointers : State values keep on saving when graph traversal
+- superstep -> checkpoint convert parent:child relation
+- Theads/ Config in Persistence: like using same graph with diffferent key value pair 
+- chatbot.getStaet(config) pass and get
+### Implementation Code: Joke -> explanation generate -> end
