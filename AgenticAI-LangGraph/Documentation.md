@@ -100,4 +100,16 @@ f) Halting Condition : No more nodes and condition fulfilled
     - Use Reducer Function -> individual_score field [a b c] need to do merging here: by default field replace/update: need reducer function
     - Model with structured output will use based on schema defined - Langchain BaseModel  BaseModel -> Field Description which LLM understands
     - Now continuing with State of Langgraph concept easy mixing
-    - state: individual_score: list[int] -add Reducer here : Annotate[list[int],operator.add] -> [5] + [6] + [7] -> operator is doing addition and telling to add
+    - state: individual_score: list[int] -add Reducer here : Annotate[list[int],operator.add] -> [5] + [6] + [7] -> operator is doing addition and telling to add, returning from functuion we do {a:a, individual_score:[5]} like this all returned there value and the reducer keeps on combining the state value -> next node merge happened to that field in state
+    - sum(individual_score)/len(individual_score) can be used
+
+### Conditional Workflows:
+-  Instead of parallel we add condiiton to select one instead of many -> 1 to 2 or 1 to 3
+- Non-LLM based: Quadratic Equation Workflow: 
+    - *Condition function create: whose output is other function names : if state[a]>0 return function name which is being returned
+    - Routing function act, tell the node name
+    - Instead of add edgees we do conditional edges with a router function
+    - do like graph.add_conditional_edge("nodeName",router function which return the node name) -> so edge converted based on condition
+- LLM Based: Review Handling Workflow : Customer review reply sentiment positive or negative then reply write
+    - Postiive negativfe -> strucutred output use BaseModel & Field -> Langchain type
+    - Reply -> LLM help prompt
