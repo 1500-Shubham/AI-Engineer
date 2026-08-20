@@ -138,3 +138,34 @@ f) Halting Condition : No more nodes and condition fulfilled
 - Theads/ Config in Persistence: like using same graph with diffferent key value pair 
 - chatbot.getStaet(config) pass and get
 ### Implementation Code: Joke -> explanation generate -> end
+- Step:1- In Memory Saver(): checkpointer= InMemorySaver() and simply worflow = graph.compile(checkpointer=checkpointer)
+- Step:2- config1={"configurable":{"thread_id:"1} : workflow.invoke({state value start},config=config)
+- Step-3: workflow.get_state(config) // get final value of state based on config
+- Step-4 worflow.get_state_history()
+### Benefits of Persistence
+
+a) Short Term Memory b) Fault Tolerance c) Human in the loop d) Time Travel
+
+#### Fault Tolerance-> crash at some node -> resume from that node
+- Mimic try-one node -> delay 30seconds - manuallys- keyboard stop
+- Notice that it will start from next node -> use graph.get_state()
+- Resume: again call graph.invoke(None,{same config}) easyyy
+
+#### Human in the loop:
+- Workflow -> topic->Linekdin Post-> Ask my permission(HITL) -> API call : By default LangGraph do interrupt before human in the loop
+- A dedicated section future
+
+#### Time Travel: Workflow execution replay after its finished
+- Can go to a particular node and resume from that and replay further steps
+- Helps in debugging as going to that checkpoint and resume again
+###### Replay the workflow from some state
+- Steps: use get_state_history and get tthat checkpoint reaching there
+   - Step1 - each checkpoint has its ID
+   - workflow.get_state("config=thread1, "checkpoint_id":211)
+   - workflow.invoke(config, checkpoint_id="") from this state/checkpoint resume the workflow and replay state changed
+   - State History: now has all previous + new state information
+###### Update state using checkpoint 
+- workflow.update_state(config,checkpointid, new_vlaue_state at that place)
+- worflow.invoke(None, config,checkpoint) // replay from that state
+
+## Langsmith: Observability in LLM Applications
