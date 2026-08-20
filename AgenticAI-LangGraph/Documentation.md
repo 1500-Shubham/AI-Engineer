@@ -133,7 +133,7 @@ f) Halting Condition : No more nodes and condition fulfilled
 ## Persistence in LangGraph | Time Travel
 - store and restore state of workflow -> since all nodes in graph share same state
 - state: {final_value, intermediate value} -> db store -> fault tolerance help if any node crash we know the state values
-#### Checkpointers : State values keep on saving when graph traversal
+### Checkpointers : State values keep on saving when graph traversal
 - superstep -> checkpoint convert parent:child relation
 - Theads/ Config in Persistence: like using same graph with diffferent key value pair 
 - chatbot.getStaet(config) pass and get
