@@ -169,3 +169,37 @@ a) Short Term Memory b) Fault Tolerance c) Human in the loop d) Time Travel
 - worflow.invoke(None, config,checkpoint) // replay from that state
 
 ## Langsmith: Observability in LLM Applications
+
+## Tools
+- Chatbot add : Numerical Calculation, Internet Search, Stock Tool (Company stock price at this moment)
+a) Fundamentals
+- chat_node -> decision making -> Tool call or chatting deciside : CHAT_NODE DECSION OR ACTION -> Tool NODE
+- All Tools Collection -> Special TOOL NODE (handle all tools) -> Chat node send tool name -> TOOL NODE -> exectute that tool with tool name and query to be used
+- Tool node: bridge between graph and external Tools (function API utilities)
+- Tools Condition: Question based chatting or tool call needed -> prebuild condiitonal edge function
+
+b) Code Use:
+- ToolNode, tool_condition from langgraph.prebuild
+- Langchain -> DuckDuckGo -> tool (custom tool create)
+- Step:1 Create all Tools (Prebuild Tool and Custom Tool)
+    - search tool - prebuild 
+    - @tool function def(params) -> dict -> info about it comment docString needed LLM read 
+    - @tool -> def (var) -> dict -> comments and API 
+- Step2: 
+    - tools = []
+    - model.bind_tools(tools) // upto this langchain llm ready with tools
+- Step3: LangGraph flow: support
+    - Need to create ChatNode and ToolNode toolNode-> (tools=[] input give)
+    - ChatNode  mode_with_tool.invoke()
+    - EDGES: graph.add_condition_edge(chatnode, tools_conditions) -> here Langgraph direct to Tool Node if needed
+- Problem -> ChatNode -> ToolNode (output dict) -> return as END: Need LLM after ToolNode -> ChatNode then end refined way , ALSO two way two Tools -> Tool1 -> LLM -> Tool2 -> LLM -> Refined way
+- Solution: 
+    - graph.add_edge("tools","chat_node")
+    - tools_condition output -> TOOL NODE or END NODE
+c) Integrate this tool concept inside CHATBOT
+
+## MCP
+
+## RAG
+
+## SubGraphs
