@@ -196,9 +196,44 @@ b) Code Use:
 - Solution: 
     - graph.add_edge("tools","chat_node")
     - tools_condition output -> TOOL NODE or END NODE
+
 c) Integrate this tool concept inside CHATBOT
 
-## MCP
+## MCP Client: Tools live in Server having all TOOLS:
+a) Fundamentals -
+- improved version of tools : better way to standarize way to connect to llm applications. 
+- Normal Tool Flaw -> ex. get github prs function -> pull request show
+    - Approach is brittle: can break no gurantee works tomorrow,
+    - Chatbot(Tool calling API) -> Github (API) : Github updated the APIv.2 payload params, better use MCP Client of Github directly, we have to change code for each Client
+- MCP: Bridge build Chatbot (Client) only config which dont change like token -> Github (Server) : github maintains only
+- SERVERS = {config code connect to github } -> tools and its definition which can pe passed to LLM easy - solved maintenance code
+
+b) Build own MCP Server with all tools -> FASTMCP
+- Need to watch playlist MCP Proper Playlist
+- Basic:
+    - mcp = FastMCP
+    - @mcp.tool def fucntion with async -> comment for llm
+
+c) Basic Code:
+- Replacing Tool with MCP Client and Server
+- ##### MCP Client needs async code -> convert into async
+    - ASYNC Convert: chatbot.ainvoke -> await use
+    - asyncio.run(main()) -> async def main():
+    - make all tools ayncs using ayncc def and ainvoke
+- ###### MCP Client Build : Replace tools with Client
+    - from langchain_mcp_adpater.cleint import MULTIServerMCPClient
+    - client decalare = {name:{args etc command}}
+    - can connect multiple mcp in a single go same client = multiple configs
+    - to run mcp server we write a command in config only- command python +argscombinatron something
+    - Client only starts the MCP Server with config
+    -
+- ##### Connect Client to Graph
+    - tools = await client.get_tools() -> async function
+    - print tools
+    - llm_with_tools = llm.bind(tools)
+    - SAME as Tools
+- #####
+d) Integrate in Chatbots
 
 ## RAG
 
