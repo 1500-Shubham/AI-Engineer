@@ -207,6 +207,7 @@ a) Fundamentals -
     - Chatbot(Tool calling API) -> Github (API) : Github updated the APIv.2 payload params, better use MCP Client of Github directly, we have to change code for each Client
 - MCP: Bridge build Chatbot (Client) only config which dont change like token -> Github (Server) : github maintains only
 - SERVERS = {config code connect to github } -> tools and its definition which can pe passed to LLM easy - solved maintenance code
+- Connect to URL MCP - {transport: , url:}
 
 b) Build own MCP Server with all tools -> FASTMCP
 - Need to watch playlist MCP Proper Playlist
@@ -233,8 +234,35 @@ c) Basic Code:
     - llm_with_tools = llm.bind(tools)
     - SAME as Tools
 - #####
-d) Integrate in Chatbots
+d) Integrate in Chatbots: Pending
 
 ## RAG
+a) Fundamentals: 
+- Need data privacy or personal knowledge
+- Query + Context(my rag) -> Prompt -> LLM
+- Architecture -> 
+    - Knowledge Source -> Split Smaller Parts -> Embedding model / vector -> store in db -> semantic similarity
+- LangGraph -> TOOL as define in RAG* Template use noice
+
+b) Code Learning: Rag Code
+- i) Loader PDF library (intro-to-ml.pdf) 
+- ii) splitter = RecursiveCharacterTextSplitter (chunk size, overlap), all chunks got
+- iii) embedding model = OpenAIEmbeddigns
+- iv) vector_store = FAISS all chunks and embeddings -> got all vectors //local db keh sakte stored
+- v) Create Retriever-> searching: similarity with k:4 top4 similar : retriever = vector_store.as_retriever
+
+c) LangGraph integrating RAG
+- i) @tool rag_tool def (query): "MESSAGE" -> retriever.invoke(query) -> relevant result has document Object:{ id, metadata, page_content-realvalue}
+    - return {content, metadata, query} -> use by LLM as context
+- ii) tools = [rag_tool]
+llm_with_tools = llm.bind_tool(tools)
+
+-iii) Langgraph -> concept start -> state, graph, node, edges, invoke
+
+c) Chatbot integrate : Pending
+
+## Human in the loop: HITL
+- supervise, approve, correct or guide model's output
+- ensures -> ethical, safety , accountability
 
 ## SubGraphs
