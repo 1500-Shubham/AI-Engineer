@@ -373,3 +373,32 @@ iii) Orchestrating the entire system
 i) Libraries -> LTM everything will be done by libraries
 - LangMem (all storing, retrievers, injection) -> Tension Dur
 - Mem0, supermemory
+
+## Short Term Memory: Implementation (Persistence, Context, Trimming, Summarization)
+i) InMemorySaver() 
+- checkpointer + config_var + thread_id -> State Store -> RAM or DB
+- Code given memory_in_llm folder
+- problem: store in RAM program restart loss happen
+ii) PostgresSaver() - Persistence Needed: Postgres DB Docker yaml setup
+- with PostgresSaver.from_conn_string(DBURI) as checkpointer: {all code wrapped inside this now}
+
+### Context Overflow Problem:
+- Input tokens > maxTokens support -> context window LLM Hallucinate
+- STM cant rely -> concatenate llm.invoke() -> context_window cross
+#### Techniques to solve this
+i) Trimming: stm_trimming code
+- max_token -> 500 set then call llm.invoke(all conversation -> trim to 500 tokens LAST N MESSAGES total count < 500)
+- Langchain messages util = import trim_messages, count_tokens_approximately (messages : langchain funtion to count)
+- Code: NODE inside -> messages = trim_messages (state, strategy, token_counter, max_tokens) -> llm.invoke(messages) 
+- same State pe perform trim operations
+- Problem : we only take care latest N messages - but older messages can be useful too, we are completely ignoring them 
+ii) Summarization:
+- Trimming Last N Messages + Older Messages (Summary) -> LLM send context dont get loosed
+- After summary generation- delete older state values only keep summary
+iii) Deletion: stm_deletion code
+- Code: langchina.messages -> RemoveMessage
+- Node: delete_old_messages(state -> what all messages to remove -> return {"messages" state update -> RemoveMessages(id pass of those messages)} )
+iv) Combining Summarization with Deletion: stm_summarization code
+- Workflow-> state > 6messages Trigger condition -> Summarization perform (2 last message + others summary generate and attach)
+- Summary Node -> summary and deletion perform use the LLM only and response save as System Level with content : 
+- conditional edge function (len>6) bana lo to link nodes
