@@ -285,4 +285,31 @@ c) Code Example: start - chat - end
     - user_input => received from frontend and use this to graph.invoke(Command, [approved]=='NO) easyyy
 d) Project: Chatbot with HITL: Tools, HITL flow easyyy
 
-## SubGraphs
+## SubGraphs: MultiAgent
+- When a node is replaced with another graph (own execution flow)
+- Why Subgraphs needed - example scenario: Software Development Agent -> Graph Node is itself a agent with its own capability
+    - Tool Calls
+    - RAG
+    - Retries
+    - Conditional Routing
+    - Memory
+    - HITL
+    - Evaluation
+    - Guardrails
+a) LLD Terms achieve 
+    - Modularity - Reusabioity - Maintainability 
+    - Failure Isolation - State Separation - Observability
+b) Subgraphs Adding Mechanism
+    - 1)  Parent graph node inside -> call invoke function : OWN SEPARATE STATE : Code Given 
+    - 2) Add a graph as a node directly inside Parent node replaced : SHARED STATE HERE
+c) Code:
+- Mechanism 1: 
+    - Subgraph create -> state, nodes, compile define with llm
+    - Parent Graph create -> node, state
+        - Translate Node -> call subgraph.invoke and use its result state of subgraph -> map to parent state
+- Mechanism 2:
+    - parent.add_node("translate", subgraph) -> subgraph as node replace 
+    - subgraph takes state of parent only SHARED STATE : while designing nodes of subgraph
+
+## Memory Foundation: LLMs
+- 
