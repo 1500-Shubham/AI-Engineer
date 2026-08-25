@@ -382,7 +382,7 @@ i) InMemorySaver()
 ii) PostgresSaver() - Persistence Needed: Postgres DB Docker yaml setup
 - with PostgresSaver.from_conn_string(DBURI) as checkpointer: {all code wrapped inside this now}
 
-### Context Overflow Problem:
+## Context Overflow Problem:
 - Input tokens > maxTokens support -> context window LLM Hallucinate
 - STM cant rely -> concatenate llm.invoke() -> context_window cross
 #### Techniques to solve this
@@ -402,3 +402,37 @@ iv) Combining Summarization with Deletion: stm_summarization code
 - Workflow-> state > 6messages Trigger condition -> Summarization perform (2 last message + others summary generate and attach)
 - Summary Node -> summary and deletion perform use the LLM only and response save as System Level with content : 
 - conditional edge function (len>6) bana lo to link nodes
+
+## Long Term Memory: Store Object Available in LangGraph
+a) Basics knowledge
+- Converstaion1: Travel Plans (STM) - Conversation2: Tech Talks (STM)
+- Want to know more about user based on different conversation: Need to extract those fields and store - multiple thread exist
+- When LLM query-> ask more detials about user important pieces (Episodic, Semantic, etc memory type) -> store as persistent storages -> personalized responses
+- LLM check this storage also when querying to thread conversation
+
+b) Store - Base Store (Memory store what all activities can be perform)
+- create, search, edit, delete -> exisiting memory
+- InMemoryStore() -> store in RAM (prototype check help)
+- PostgresStore() -> Persistent (production grade)
+- RedisStore()
+
+c) Code: LTM_basics code
+- store- InMemoryStore()
+- namespace needed to create data -> its a folder inside google drive organizing inside db example namespace - (user,u1) user folder -> u1 u2 subfolders
+i) Create
+- PUT METHOD -> namespace new memory create (namespace,uniqueKey,value):- store.put(namespace,"1",{data:"userlikespizza}); 
+ii) Retrieve
+- GET METHOD -> store.get(namespace,uniquekey)
+- ALL Memories -> items = store.search(namesspave) -> use loop item.value
+iii) Semantic Search -> match meaning to memory and fetch only relevant
+-  Store create + Embedding model pass : Internally DB store semantics now
+- items= store.search (namespace, query="",limit=1) // top k thing here instead of key search now direct query search -> item.value
+
+d) Chatbot Reading existing Memories: ltm_implementation:
+
+i) Seeding the memory first -> same as RAG Retrivers creation
+ii) Chat node (state, config, store) -> when do graph.invoke() -> pass the config also t ouse the store key value
+    - graph.compile(store = store) pass store here -> so NODE has this store param now in functions
+iii) llm.invoke ([system_msg = SystemMessage(content=system_prompt)] + state["messages"])    
+
+e) Chatbot creating new memories:
