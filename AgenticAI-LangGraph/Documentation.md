@@ -312,4 +312,64 @@ c) Code:
     - subgraph takes state of parent only SHARED STATE : while designing nodes of subgraph
 
 ## Memory Foundation: LLMs
-- 
+- LLM can be seen as math function y = f(x) LLM trained with billions parameters only
+- This math equation is stateless (current input depend output not anythiung happened before)
+
+a) Context Window : Amount of text an LLM can read and remember at one time before answering
+- 128K tokens or 1M tokens -> 200 pages pdf 
+- Memory build use this context thing-> combine previous thing and always send directly to function as X
+
+### Context Window Problem
+- Long converstaion message -> Trimming and Summarization -> Hybrid Context -> LLM 
+- This way context window is not broken like a technique
+
+b) In-context Learning: 
+- Emergent ability allows LLM to use information and patterns presnt in the prompt itself in addtion to its trained parametric knowledge to generate an answer
+- Company Private Data -> RAG emerged from here -> 
+- LLM Trained from world data -> created its parametric knowledge -> but if given unseen knowledge to generate an answer
+- y= f(x) trained -> if send y=f(con(x1,x2)) works again
+
+c) Memory Requirements:
+- Survive Continuity: Beyond Single Conversation, Single Seesion , Days week
+- Selective - Only information that is useful survive beyond a single thread, everything naturally fades away
+    - Who the user is, what tends to work and what usually fails, decsiion made in past
+
+d) Short Term Memory:
+- Single conversation around build up, like a session thread = [all messages store] -> pass to LLM context 
+
+e) Long Term Memory:
+- Types of LTM
+i) Episodic Memory: what happened in past helpful in ongoing conversation
+    - Past events and experiecne what worked
+ii) Semantic Memory: Important: What is true facts about user and system
+    - Facts, knowledge and stable information
+iii) Procedural Memory: How to do things
+    - Learned behavioud, rules, strategic
+    - If y fails then try x
+- How Long Term Memory Work
+i) Creation/Update
+    - New Conversatoin -> anything just happened worth remembering 
+    - User Model and Tool outcomes
+    - Extacts memory candidates : I prefer this java 
+    - filter out noise
+    - decises scope (user / agent / app)
+    - decide whether to create new memory / use existing one
+ii) Storage
+    - memory type: key,value, relational db, vector db
+    - assign identifiers and metadata
+    - making it survive restart and crashes
+iii) Retreival
+    - New Conversation -> Model things and use retrieval tools -> Store use small relevant subset of data: Example RAG retrievers
+    - Retrieval is selective: sab utha ke nahi laate
+iv) Injection:
+    - LTM -> Search -> become part of Short term memory -> Context -> LLM
+
+- Challenges
+i) Deciding what worth remembering
+ii) Retriving the right memory at right time -> STM
+iii) Orchestrating the entire system
+
+- Solution
+i) Libraries -> LTM everything will be done by libraries
+- LangMem (all storing, retrievers, injection) -> Tension Dur
+- Mem0, supermemory
