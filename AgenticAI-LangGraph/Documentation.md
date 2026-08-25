@@ -263,6 +263,26 @@ c) Chatbot integrate : Pending
 
 ## Human in the loop: HITL
 - supervise, approve, correct or guide model's output
-- ensures -> ethical, safety , accountability
+- ensures -> ethical, safety(delete files -> important cross check) , accountability, accuracy improve
+a) Common HITL Patterns:
+    - Action Aproval Pattern (Approve / Reject Before Execution)
+    - Output Review / Edit Pattern -> research -> draft(human review and refine) -> post
+    - Ambiguity Clarification Pattern -> Confusion then ask human
+    - Escalation Pattern -> when AI cant do anything -> escalate to customer support after chatbot
+b) LangGraph Integration:
+    - Start -> Research -> Post -> End (Topic related tweet draft human ask)
+    - POST NODE: decision = Interrupt() | decision == YES POST else reject
+    - Interrupt & Command Feature (HITL in workflow) : LangGtaph.Types
+        - 1) Pause the execution
+        - 2) Save State
+        - 3) Prepare a message by interrupt
+        - 4) Msg Langgraph -> Frontend
+            - Receive interrupt message -> user input YES/NO -> Backend send graph.invoke(COMMAND = YES/NO) -> start using this from this point 
+c) Code Example: start - chat - end
+    - Query asked -> first confirm from user do you really want to ask LLM something like this
+    - Chat Node Here is HITL Node having Interrupt(details which my frontend requires those key value pair)
+    - result = llm.invoke(state) -> _interrupt_ -> ek paused node
+    - user_input => received from frontend and use this to graph.invoke(Command, [approved]=='NO) easyyy
+d) Project: Chatbot with HITL: Tools, HITL flow easyyy
 
 ## SubGraphs
