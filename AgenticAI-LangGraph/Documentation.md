@@ -417,7 +417,8 @@ b) Store - Base Store (Memory store what all activities can be perform)
 - RedisStore()
 
 c) Code: LTM_basics code
-- store- InMemoryStore()
+- store- InMemoryStore() - RAM
+- Persistence Store: PostgresStore(): same code just store changed
 - namespace needed to create data -> its a folder inside google drive organizing inside db example namespace - (user,u1) user folder -> u1 u2 subfolders
 i) Create
 - PUT METHOD -> namespace new memory create (namespace,uniqueKey,value):- store.put(namespace,"1",{data:"userlikespizza}); 
@@ -435,4 +436,16 @@ ii) Chat node (state, config, store) -> when do graph.invoke() -> pass the confi
     - graph.compile(store = store) pass store here -> so NODE has this store param now in functions
 iii) llm.invoke ([system_msg = SystemMessage(content=system_prompt)] + state["messages"])    
 
-e) Chatbot creating new memories:
+e) Chatbot creating new memories: LTM while chatting: ltm_implementation code
+- Start -> RememberNode -> End (Adding to Memory Store)
+- need llm to create memory -> Pydantic Structure output feature use extract -> bool (Field== desc: whether to store any memory), memories:List(Field ==)
+- memory_extractor = llm.with_structure_output(PydanticScheme)
+- NODE: create -> state, config, store :- 
+    - use state to get messages 
+    - send to llm with prompt -> take out pydantic scheme 
+    - store in base storage: Store.put(namespace,key,value)
+- Cross Check: store.search()
+f) Creating Memories without Duplication: same code run again it stores again
+- LLM -> Memory extract -> (current messages + exisiting memories) -> already_exist_memory T/F then act
+g) Merged Chatbot -> Start -> Remember -> Chat -> End 
+- Both store and read combined easy see code implementation
