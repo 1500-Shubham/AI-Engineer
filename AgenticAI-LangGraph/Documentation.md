@@ -168,7 +168,7 @@ a) Short Term Memory b) Fault Tolerance c) Human in the loop d) Time Travel
 - workflow.update_state(config,checkpointid, new_vlaue_state at that place)
 - worflow.invoke(None, config,checkpoint) // replay from that state
 
-## Langsmith: Observability in LLM Applications
+
 
 ## Tools
 - Chatbot add : Numerical Calculation, Internet Search, Stock Tool (Company stock price at this moment)
@@ -197,7 +197,7 @@ b) Code Use:
     - graph.add_edge("tools","chat_node")
     - tools_condition output -> TOOL NODE or END NODE
 
-c) Integrate this tool concept inside CHATBOT
+c) Integrate this tool concept inside CHATBOT: Chatbot section
 
 ## MCP Client: Tools live in Server having all TOOLS:
 a) Fundamentals -
@@ -234,7 +234,7 @@ c) Basic Code:
     - llm_with_tools = llm.bind(tools)
     - SAME as Tools
 - #####
-d) Integrate in Chatbots: Pending
+d) Integrate in Chatbots: Chatbot Section
 
 ## RAG
 a) Fundamentals: 
@@ -259,7 +259,7 @@ llm_with_tools = llm.bind_tool(tools)
 
 -iii) Langgraph -> concept start -> state, graph, node, edges, invoke
 
-c) Chatbot integrate : Pending
+c) Chatbot integrate : Chatbot Section
 
 ## Human in the loop: HITL
 - supervise, approve, correct or guide model's output
@@ -449,3 +449,57 @@ f) Creating Memories without Duplication: same code run again it stores again
 - LLM -> Memory extract -> (current messages + exisiting memories) -> already_exist_memory T/F then act
 g) Merged Chatbot -> Start -> Remember -> Chat -> End 
 - Both store and read combined easy see code implementation
+
+
+
+## Chatbot-Langraph : Learning and notes
+#### Frontend: Streamlit - streamlit run filename & Backend: Worflow and everything
+a) Components in Streamlit
+i) Chat_message : st.chat_message : either user or AI assistant kisne bheja: Create text box
+
+ii) Chat_input
+var = chat_input("type and store")
+
+iii) st.session_state: persist data after rerun
+
+iv) Call chatbot from backend to invoke the graph get response -> show in ui easy
+
+v) Streaming Component -> Streamlit support st.writeStream (generator provide)
+- take the chatbot from backedn and implement in frontend directly instead of doing chatbot.invoke function and wrap in UI Component
+
+b) Backend:
+- create a graph and chatbot llm .invoke just export this
+- all checkpointer and retaining logic is inside backend
+- replacing while True: logic for chatbot in ui think like that
+
+#### Streaming in Langraph: LLM start sending token as soon it is ready instead of waiting for complete response ready 
+- LLM respone 500 words ek baar mein streamlit show ho ja raha
+- Character by character show in ui something like CHATGPT
+- SAves token by cancelling in between UI experience good
+a) Implement: 
+- graph.invoke() call not
+- for message_chunk , metadata in graph.stream()-> return a generator object in python -> if message_chunk.content print it this is the token 
+- loop this generator and yield one token at a time
+
+#### Resume Chat: Feature : Multiple Conversation : each has own resume of config thing
+- backend same using checkpointer, in frontend just pass different config to invoke easy
+- Frontend: 
+    - Sidebar (threadid store in session and use to invoke chatbot) sidebar component
+    - Thread id generate : uuid
+    - list store thread_id
+    - We are using same session_state aur usme reset kar rahe yahi sab hai
+- Transition between session_state -> manage chat_thread, thread_id, message_history to display -> rest everything is configured in backend using CONFIG
+- ** Instead of storing message_history in Frontend state use graph.get_state_history() feature in frontend and reset the message histroy from there eaxyy -> using same thread_id
+- Backend stage History -> map to strealit expected chat_messages
+
+#### SQLIte for Chatbot: Backend and Frontend : Resume Chat RAM - PERMANENT STORAGE 
+- SQLITE Checkpointer backend add checkpointer = (conn= sql conn)
+- Checkpointer => extract thread_id syntax hoga backend mein -> Funcgtion retrieve_all_thread() 
+- Frontend -> When refreshing server chat_thread => populate these thread_id already exisitng in db -> retrieve_all_thread() call this to backend
+ 
+#### Tools, MCP, RAG Code integrate in chatbot
+- Tools Backend same -> Frontend graph.stream -> maybe need to convert TOOLS MEssage into formating type
+- MCP: since this is async -> chatbot.astream use hoga
+- RAG: same backend and frontend logic
+
+## Langsmith: Observability in LLM Applications
