@@ -502,4 +502,22 @@ a) Implement:
 - MCP: since this is async -> chatbot.astream use hoga
 - RAG: same backend and frontend logic
 
-## Langsmith: Observability in LLM Applications
+## Langsmith: Observability in LLM Applications : Logs, Metrics and Traces
+i)Latency across components in GRAPH break down, debugging help, P99,P95
+ii)LLM Token Cost + Prompt Change + Hallucinate in between estimation across components
+iii)RAG Retrivers wrong fetch debug , top k wrong set yeh sab debug
+iv) Alerting based on metrics 
+
+##### Features:
+i) Playground: Models output check
+ii) Prompt store and use single place
+
+##### Setup:
+- Langsmith keys account create -> put in env where running python
+- Whenever running any .py file -> load_env() automatically went to langsmith trace everything now
+- chat.invoke (config = {can put tags and metadata used for langsmith})
+
+##### RAG Based + Langsmith: Tracing Projects
+- Langsmith just trace defualt Runnables: no pdf chunking splitting these fucntions
+- @traceable: put in fucntion decorators form : add tags metadata for filetering
+- sepratre traces combined together aise
